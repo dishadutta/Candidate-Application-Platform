@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import JobFilters from './components/JobFilters'
+import JobList from './components/JobList'
+import { fetchJobs } from './features/jobs/jobSlice'
 
 function App() {
+  const dispatch = useDispatch()
+
+  const handleApplyFilters = (filters) => {
+    console.log(filters)
+    dispatch(fetchJobs(filters))
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <JobFilters onApplyFilters={handleApplyFilters} />
+      <JobList />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
