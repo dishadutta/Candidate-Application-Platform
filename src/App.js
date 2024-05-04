@@ -13,7 +13,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div style={{ margin: '20px' }}>
       <JobFilters onApplyFilters={handleApplyFilters} />
       <JobList />
     </div>

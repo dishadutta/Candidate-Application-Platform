@@ -34,6 +34,7 @@ export const fetchJobs = createAsyncThunk(
       //       (job.minJdSalary && parseInt(job.minJdSalary) >= 200000)
       //   ),
       // }
+
       const filteredJobs = {
         jdList: data.jdList.filter(
           (job) =>
