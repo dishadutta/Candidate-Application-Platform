@@ -49,17 +49,15 @@ function JobList() {
                   <CardContent>
                     <div className='card1-section'>
                       <img
-                        height={40}
+                        height={30}
                         width={25}
                         src={job.logoUrl}
                         alt={job.companyName}
                       />
                       <div>
-                        <div className='info'>
-                          <h3>{job.companyName}</h3>
-                          <h2>{job.jobRole}</h2>
-                        </div>
-                        <p className='job-loc'>{job.location}</p>
+                        <div className='company-name'>{job.companyName}</div>
+                        <div className='job-role'>{job.jobRole}</div>
+                        <div className='job-loc'>{job.location}</div>
                       </div>
                     </div>
                     <p className='est-salary'>

@@ -22,6 +22,21 @@ code {
   gap: 0.5;
 }
 
+.company-name {
+  padding-left: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 3px;
+  color: #8b8b8b;
+}
+
+.job-role {
+  font-size: 14px;
+  line-height: 1.5;
+  padding-left: 4px;
+}
+
 .info > h3 {
   font-size: 13px;
   font-weight: 600;
@@ -39,6 +54,7 @@ code {
   font-size: 11px;
   font-weight: 500;
   margin-top: 5px;
+  padding-right: 4px;
 }
 
 .est-salary {
