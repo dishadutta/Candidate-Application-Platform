@@ -5,19 +5,21 @@ function FilterComponent({ onApplyFilters }) {
     minExp: [],
     companyName: [],
     location: [],
-    remote: [], // if location is remote then set it to true else on-site
+    remote: [],
     techStack: [],
     jobRole: [],
     minJdSalary: [],
   })
 
+  // Adjusted handleChange to check specifically for 'Enter' key press
   const handleChange = (event) => {
     const { name, value } = event.target
-    if (event.key === 'Enter' && value) {
-      // Triggered on Enter
+    if (event.key === 'Enter' && value.trim()) {
+      // Check for 'Enter' key and non-empty trimmed value
+      event.preventDefault() // Prevents the default action to handle correctly
       setFilters((prev) => ({
         ...prev,
-        [name]: [...prev[name], value],
+        [name]: [...prev[name], value.trim()],
       }))
       event.target.value = '' // Clear input field after adding to tags
     }
@@ -31,6 +33,7 @@ function FilterComponent({ onApplyFilters }) {
   }
 
   const handleSubmit = () => {
+    console.log(filters)
     onApplyFilters(filters)
   }
 
@@ -45,7 +48,8 @@ function FilterComponent({ onApplyFilters }) {
           </span>
         ))}
         <input
-          onKeyPress={(e) => handleChange(e)}
+          type='text'
+          onKeyPress={handleChange}
           name='jobRole'
           placeholder='Add and press Enter'
         />
@@ -61,7 +65,8 @@ function FilterComponent({ onApplyFilters }) {
           </span>
         ))}
         <input
-          onKeyPress={(e) => handleChange(e)}
+          type='text'
+          onKeyPress={handleChange}
           name='minJdSalary'
           placeholder='Add and press Enter'
         />
