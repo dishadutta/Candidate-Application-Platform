@@ -8,7 +8,6 @@ function App() {
   const dispatch = useDispatch()
 
   const handleApplyFilters = (filters) => {
-    console.log(filters)
     dispatch(fetchJobs(filters))
   }
 

@@ -8,12 +8,16 @@ import CardContent from '@mui/material/CardContent'
 import ShowMoreModal from './ShowMoreModal'
 
 function JobList() {
+  // const dispatch = useDispatch()
+  // const { jobs, loading, error } = useSelector((state) => state.jobs)
+
+  // useEffect(() => {
+  //   dispatch(fetchJobs(10, 0))
+  // }, [dispatch]) // Empty dependency array means this runs once on mount
   const dispatch = useDispatch()
   const { jobs, loading, error } = useSelector((state) => state.jobs)
 
-  useEffect(() => {
-    dispatch(fetchJobs(10, 0))
-  }, [dispatch]) // Empty dependency array means this runs once on mount
+  dispatch(fetchJobs({}))
 
   return (
     <div>

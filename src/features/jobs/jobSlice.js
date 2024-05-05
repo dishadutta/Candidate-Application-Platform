@@ -1,20 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
-function filterJobs(jobs, filters) {
+const filterJobs = (jobs, filters) => {
   return jobs.filter((job) => {
-    // Check each filter key and return true only if all conditions are met
     return Object.entries(filters).every(([key, value]) => {
-      if (value.length === 0) {
-        return true // If no filter is set for this key, ignore it
-      }
+      if (value.length === 0) return true
       if (key === 'minJdSalary') {
-        const minSalary = Math.min(...value.map(Number)) // Convert all to number and get the smallest
+        const minSalary = Math.min(...value.map(Number))
         return job.maxJdSalary >= minSalary
       }
-      if (Array.isArray(value)) {
-        return value.includes(job[key]) // For arrays, check if any filter matches
-      }
-      return job[key] === value // For strings, check direct equality
+      if (Array.isArray(value)) return value.includes(job[key])
+      return job[key] === value
     })
   })
 }
@@ -22,44 +17,29 @@ function filterJobs(jobs, filters) {
 export const fetchJobs = createAsyncThunk(
   'jobs/fetchJobs',
   async (filters, { rejectWithValue }) => {
-    const filteredParams = Object.fromEntries(
-      Object.entries(filters).filter(([_, value]) => value)
-    )
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ limit: 10, offset: 0, ...filteredParams }),
-    }
-    console.log(filteredParams)
-
     try {
+      const filteredParams = Object.entries(filters).reduce(
+        (acc, [key, value]) => {
+          if (value) acc[key] = value
+          return acc
+        },
+        {}
+      )
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ limit: 10, offset: 0, ...filteredParams }),
+      }
       const response = await fetch(
         'https://api.weekday.technology/adhoc/getSampleJdJSON',
         requestOptions
       )
       const data = await response.json()
-      console.log(data)
-
-      const filterJob = filterJobs(data.jdList, filteredParams)
-      console.log(filteredParams)
-      console.log(filterJob)
-
-      // const filteredJobs = {
-      //   jdList: data.jdList.filter(
-      //     (job) =>
-      //       job.jobRole === filteredParams.jobRole ||
-      //       (job.minJdSalary && parseInt(job.minJdSalary) >= 200000)
-      //   ),
-      // }
-      // console.log(filteredJobs)
-
-      const datafilter = {
-        jdList: filterJob,
-      }
-      console.log(datafilter)
-
-      return data
+      const filteredJobs = filterJobs(data.jdList, filteredParams)
+      console.log(filteredJobs)
+      return { jdList: filteredJobs, totalCount: data.totalCount }
     } catch (error) {
+      console.error(error)
       return rejectWithValue(error.message)
     }
   }
@@ -81,12 +61,8 @@ export const jobSlice = createSlice({
       })
       .addCase(fetchJobs.fulfilled, (state, action) => {
         state.loading = false
-        if (action.payload.jdList && Array.isArray(action.payload.jdList)) {
-          state.jobs = [...state.jobs, ...action.payload.jdList] // Map jdList to jobs
-          state.totalCount = action.payload.totalCount
-        } else {
-          console.error('Job data is not iterable:', action.payload)
-        }
+        state.jobs = action.payload.jdList
+        state.totalCount = action.payload.totalCount
       })
       .addCase(fetchJobs.rejected, (state, action) => {
         state.loading = false

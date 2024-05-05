@@ -6,7 +6,6 @@ function FilterComponent({ onApplyFilters }) {
     companyName: [],
     location: [],
     remote: [],
-    techStack: [],
     jobRole: [],
     minJdSalary: [],
   })
@@ -38,9 +37,9 @@ function FilterComponent({ onApplyFilters }) {
   }
 
   return (
-    <div>
+    <div className='filter-head'>
       <div>
-        <label>Job Role:</label>
+        <label style={{ fontWeight: 'bold', fontSize: '13px' }}>Roles:</label>
         {filters.jobRole.map((role, index) => (
           <span key={index}>
             {role}
@@ -55,7 +54,77 @@ function FilterComponent({ onApplyFilters }) {
         />
       </div>
       <div>
-        <label>Minimum Salary:</label>
+        <label style={{ fontWeight: 'bold', fontSize: '13px' }}>
+          Company Name:
+        </label>
+        {filters.companyName.map((role, index) => (
+          <span key={index}>
+            {role}
+            <button onClick={() => handleDelete('companyName', index)}>
+              ×
+            </button>
+          </span>
+        ))}
+        <input
+          type='text'
+          onKeyPress={handleChange}
+          name='companyName'
+          placeholder='Add and press Enter'
+        />
+      </div>
+      <div>
+        <label style={{ fontWeight: 'bold', fontSize: '13px' }}>
+          Location:
+        </label>
+        {filters.location.map((role, index) => (
+          <span key={index}>
+            {role}
+            <button onClick={() => handleDelete('location', index)}>×</button>
+          </span>
+        ))}
+        <input
+          type='text'
+          onKeyPress={handleChange}
+          name='location'
+          placeholder='Add and press Enter'
+        />
+      </div>
+      <div>
+        <label style={{ fontWeight: 'bold', fontSize: '13px' }}>
+          Minimum Experience:
+        </label>
+        {filters.minExp.map((role, index) => (
+          <span key={index}>
+            {role}
+            <button onClick={() => handleDelete('minExp', index)}>×</button>
+          </span>
+        ))}
+        <input
+          type='text'
+          onKeyPress={handleChange}
+          name='minExp'
+          placeholder='Add and press Enter'
+        />
+      </div>
+      {/* <div>
+        <label style={{fontWeight:'bold, fontSize: '13px''}}>Job Role:</label>
+        {filters.jobRole.map((role, index) => (
+          <span key={index}>
+            {role}
+            <button onClick={() => handleDelete('jobRole', index)}>×</button>
+          </span>
+        ))}
+        <input
+          type='text'
+          onKeyPress={handleChange}
+          name='jobRole'
+          placeholder='Add and press Enter'
+        />
+      </div> */}
+      <div>
+        <label style={{ fontWeight: 'bold', fontSize: '13px' }}>
+          Minimum Salary:
+        </label>
         {filters.minJdSalary.map((salary, index) => (
           <span key={index}>
             {salary}
