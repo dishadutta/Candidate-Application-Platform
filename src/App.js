@@ -13,7 +13,10 @@ function App() {
 
   return (
     <div style={{ margin: '20px' }}>
-      <JobFilters onApplyFilters={handleApplyFilters} />
+      <div className='loader-body'>
+        <div className='platform'>Candidate Application Platform</div>
+      </div>
+      <JobFilters nApplyFilters={handleApplyFilters} />
       <JobList />
     </div>
   )

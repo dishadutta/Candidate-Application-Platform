@@ -36,7 +36,6 @@ export const fetchJobs = createAsyncThunk(
       )
       const data = await response.json()
       const filteredJobs = filterJobs(data.jdList, filteredParams)
-      console.log(filteredJobs)
       return { jdList: filteredJobs, totalCount: data.totalCount }
     } catch (error) {
       console.error(error)

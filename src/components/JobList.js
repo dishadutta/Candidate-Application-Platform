@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchJobs } from '../features/jobs/jobSlice'
 import { Grid } from '@mui/material'
@@ -8,33 +8,31 @@ import CardContent from '@mui/material/CardContent'
 import ShowMoreModal from './ShowMoreModal'
 
 function JobList() {
-  // const dispatch = useDispatch()
-  // const { jobs, loading, error } = useSelector((state) => state.jobs)
-
-  // useEffect(() => {
-  //   dispatch(fetchJobs(10, 0))
-  // }, [dispatch]) // Empty dependency array means this runs once on mount
   const dispatch = useDispatch()
-  const { jobs, loading, error } = useSelector((state) => state.jobs)
+  const { jobs, loading, totalCount } = useSelector((state) => state.jobs)
 
   dispatch(fetchJobs({}))
 
+  // Infinite Scroll Logic
+  window.onscroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop ===
+      document.documentElement.offsetHeight
+    ) {
+      if (totalCount && !loading) {
+        dispatch(fetchJobs({ limit: 20, offset: jobs.length }))
+      }
+    }
+  }
+
   return (
     <div>
-      {console.log(jobs)}
-      {loading ? <p>loading</p> : <p>loaded</p>}
+      {loading && <div className='loader' />}
       {jobs.length > 0 ? (
         <Grid container spacing={4}>
           {jobs.map((job) => (
             <Grid item xs={12} sm={6} md={4} key={job.jdUid}>
-              <div
-                style={
-                  {
-                    // padding: 20,
-                    // textAlign: 'center',
-                  }
-                }
-              >
+              <div>
                 <Card
                   className='card-hover-effect'
                   sx={{ borderRadius: 5, padding: '8px 16px' }}
@@ -81,8 +79,6 @@ function JobList() {
       ) : (
         <p>No jobs found.</p>
       )}
-      {/* will implement spinner to show data loading */}
-      {error && <h1>encountered a error please try again after sometime</h1>}
     </div>
   )
 }
